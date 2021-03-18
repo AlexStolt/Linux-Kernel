@@ -39,3 +39,5 @@ sudo make install
 cd /boot/
 sudo mkinitramfs -o initrd.img-5.4.86-dev 5.4.86-dev
 ```
+## [OPTIONAL] After Reboot
+```sudo update-grub```
