@@ -77,3 +77,45 @@ gcc -c main.c -o main.o
 gcc main.o -L. -lhello_syscall_wrapper
 ```
 6. Results (printf()): ```dmesg```
+
+## Modules
+### Layout
+```
+#include <linux/init.h>
+#include <linux/module.h>
+
+MODULE_LICENSE("DualBSD/GPL");
+
+static int hello_init(void){
+   printk(KERN_ALERT "Hello,world\n");
+   return 0;
+}
+
+static void hello_exit(void){
+   printk(KERN_ALERT "Goodbye,cruelworld\n");
+}
+
+module_init(hello_init);
+module_exit(hello_exit);
+```
+
+### Makefile
+```
+obj−m := module.o
+module-objs := file_1.o file_2.o
+
+KERNELDIR ?= /lib/modules/$(shell uname −r)/build
+PWD := $(shellpwd)
+
+default:
+   $(MAKE) −C $(KERNELDIR) M=$(PWD) modules
+
+clean:
+   rm −f *.o *.ko *.mod.c
+```
+### Load Module to Kernel
+```sudo insmod module.ko```
+#### Show Loaded Modules
+```lsmod``` or ```lsmod | grep module```
+### Remove Module from Kernel
+```sudo rmmod module.ko```
