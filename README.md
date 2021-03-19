@@ -48,5 +48,5 @@ sudo mkinitramfs -o initrd.img-5.4.86-dev 5.4.86-dev
 5. Compile Kernel
 6. **Syscall Definition**: ```/usr/src/linux-5.4.86-dev/arch/x86/include/generated/uapi/asm/unistd_64.h```
    * #define __NR_hello_syscall 436```
-7. Make Syscall Visible to User: Copy ```/usr/src/linux-5.4.86-dev/arch/x86/include/generated/uapi/asm/unistd_64.h``` to ```/usr/include/x86_64-linux-gnu/asm```
+7. **Make Syscall Visible to User**: Copy ```/usr/src/linux-5.4.86-dev/arch/x86/include/generated/uapi/asm/unistd_64.h``` to ```/usr/include/x86_64-linux-gnu/asm```
 8. Compile Kernel
