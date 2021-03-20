@@ -1,7 +1,7 @@
 #include <linux/sched.h>
 
-// Get current pointer. Find real parent process pointer and pid. Do that    //
-// iteratively until pid == 1.                                               //
+//Get current pointer. Find real parent process pointer and pid. Do that iteratively until pid == 1
+
 
 SYSCALL_DEFINE0(find_roots){
   struct task_struct *curr_task;
