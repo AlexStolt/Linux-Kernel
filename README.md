@@ -101,17 +101,18 @@ module_exit(hello_exit);
 
 ### Makefile
 ```
-obj−m := module.o
+obj-m := module_name.o
 module-objs := file_1.o file_2.o
 
-KERNELDIR ?= /lib/modules/$(shell uname −r)/build
-PWD := $(shellpwd)
+KERNELDIR ?= /lib/modules/$(shell uname -r)/build
+PWD := $(shell pwd)
 
 default:
-   $(MAKE) −C $(KERNELDIR) M=$(PWD) modules
+        $(MAKE) -C $(KERNELDIR) M=$(PWD) modules
 
-clean:
-   rm −f *.o *.ko *.mod.c
+clean: 
+        rm -f *.o *.ko *.mod.c
+
 ```
 ### Load Module to Kernel
 ```sudo insmod module.ko```
