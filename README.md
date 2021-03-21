@@ -112,7 +112,6 @@ default:
 
 clean: 
         rm -f *.o *.ko *.mod.c
-
 ```
 ### Load Module to Kernel
 ```sudo insmod module.ko```
