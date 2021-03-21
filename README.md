@@ -45,13 +45,13 @@ sudo mkinitramfs -o initrd.img-5.4.86-dev 5.4.86-dev
     * SYSCALL_DEFINE0(hello_syscall) -> asmlinkage long sys_hello_syscall(void);
 4. **Syscall Number**: ```/usr/src/linux-5.4.86-dev/arch/x86/entry/syscalls/syscall_64.tbl```
     * Example: 436&nbsp;&nbsp;&nbsp;&nbsp;common&nbsp;&nbsp;&nbsp;&nbsp;hello_syscall&nbsp;&nbsp;&nbsp;&nbsp;__x64_sys_hello_syscall
-5. Compile filename.c file
+5. Compile filename.c file ???
 6. **Syscall Definition**: ```/usr/src/linux-5.4.86-dev/arch/x86/include/generated/uapi/asm/unistd_64.h```
    * #define __NR_hello_syscall 436
 7. **Make Syscall Visible to User**: Copy ```/usr/src/linux-5.4.86-dev/arch/x86/include/generated/uapi/asm/unistd_64.h``` to ```/usr/include/x86_64-linux-gnu/asm```
 8. Compile Kernel
 9. **View Syscall**: ```/boot/System.map-5.4.86-dev```
-   * ```grep "hello_syscall /boot/System.map-5.4.86-dev"```
+   * ```grep "hello_syscall" /boot/System.map-5.4.86-dev```
 
 ## User Paths
 1. Create a Header File: ```syscall_wrapper.h```
