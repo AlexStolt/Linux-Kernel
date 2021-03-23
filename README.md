@@ -110,8 +110,8 @@ PWD := $(shell pwd)
 default:
         $(MAKE) -C $(KERNELDIR) M=$(PWD) modules
 
-clean: 
-        rm -f *.o *.ko *.mod.c
+clean:
+        rm -f *.o *.ko *.mod.c *.mod *.order *.symvers
 ```
 ### Load Module to Kernel
 ```sudo insmod module.ko```
