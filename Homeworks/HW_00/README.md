@@ -1,7 +1,7 @@
 # Homework 0
 
 ## Task 0
-Location Path: ```./project1_syscall/```
+Location Path: ```./System\ Call/```
 
 * How to Compile: Run ```make``` on Location Path
 * How to Run: Run ```./output``` on Location Path
@@ -10,7 +10,7 @@ Location Path: ```./project1_syscall/```
 
 ## Task 1
 
-Location Path: ```./project1_module/```
+Location Path: ```./Modules/```
 
 * How to Compile: Run ```make``` on Location Path 
 * Load Module on Kernel: ```sudo insmod project1-kyber.ko``` on Location Path 
@@ -19,7 +19,7 @@ Location Path: ```./project1_module/```
 * How to Clean: Run ```make clean``` on Location Path
 
 ## Task 2
-Location Path: ```./sysfs_module/```
+Location Path: ```./SYSFS/```
 
 * How to Compile: Run ```make``` on Location Path
 * Load Module on Kernel: ```sudo insmod sysfs_module.ko``` on Location Path
