@@ -18,7 +18,7 @@ Location Path: ```./project1_module/```
 * How to Test: Create a File and Write Something, then run "dmesg | tail"
 * How to Clean: Run "make clean" on Location Path
 
-## Task 3
+## Task 2
 Location Path: ```./sysfs_module/```
 
 * How to Compile: Run "make" on Location Path
