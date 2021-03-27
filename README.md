@@ -53,7 +53,7 @@ sudo mkinitramfs -o initrd.img-5.4.86-dev 5.4.86-dev
 9. **View Syscall**: ```/boot/System.map-5.4.86-dev```
    * ```grep "hello_syscall" /boot/System.map-5.4.86-dev```
 
-## User Paths
+## Testing Kernel Syscall from User Level
 1. Create a Header File: ```syscall_wrapper.h```
 ```
 int hello_syscall_wrapper(void)
@@ -65,12 +65,12 @@ int hello_syscall_wrapper(void) {
    return syscall(__NR_hello_syscall)
 }
 ```
-3. Create a Static Library: ```libhello_syscall_wrapper.a```
+3. Create a **Static Library**: ```libhello_syscall_wrapper.a```
 ```
  gcc -c syscall_wrapper.c -o syscall_wrapper.o
  ar rcs libhello_syscall_wrapper.a syscall_wrapper.o
  ```
-4. Write a Main: ```main.c```
+4. Write a Main Entry Point: ```main.c```
 5. Compile Main and Connect to Library
 ```
 gcc -c main.c -o main.o
