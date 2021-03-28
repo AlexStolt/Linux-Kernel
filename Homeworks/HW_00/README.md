@@ -2,7 +2,7 @@
 ## Final Project Submission
 
 ### Task 0
-Location Path: ```Final\ Project\ Submission/project1_syscall/```
+Location Path: ```Final_Project_Submission/project1_syscall/```
 
 * How to Compile: Run ```make``` on Location Path
 * How to Run: Run ```./output``` on Location Path
@@ -11,7 +11,7 @@ Location Path: ```Final\ Project\ Submission/project1_syscall/```
 
 ### Task 1
 
-Location Path: ```Final\ Project\ Submission/project1_module/```
+Location Path: ```Final_Project_Submission/project1_module/```
 
 * How to Compile: Run ```make``` on Location Path 
 * Load Module on Kernel: ```sudo insmod project1-kyber.ko``` on Location Path 
@@ -20,7 +20,7 @@ Location Path: ```Final\ Project\ Submission/project1_module/```
 * How to Clean: Run ```make clean``` on Location Path
 
 ### Task 2
-Location Path: ```Final\ Project\ Submission/sysfs_module/```
+Location Path: ```Final_Project_Submission/sysfs_module/```
 
 * How to Compile: Run ```make``` on Location Path
 * Load Module on Kernel: ```sudo insmod sysfs_module.ko``` on Location Path
