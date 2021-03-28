@@ -4,7 +4,7 @@
 * Copy to ```~/project1_module```
 * Rename ```kyber-iosched.c``` to ```project1-kyber.c```
 * Modify ```project1-kyber.c```
-* Create a ```Makefile```
+* Create a ```Makefile``` (Makefile is included in this File)
 * Compile with ```make``` and Load Module with ```sudo insmod project1-kyber.ko```
   * Current Scheduler: ```cat /sys/block/sda/queue/scheduler``` -> ```[mq-deadline] team00_kyber none```
 * Modify Scheduler to Test ```sudo bash -c "echo team00_kyber > /sys/block/sda/queue/scheduler"```
