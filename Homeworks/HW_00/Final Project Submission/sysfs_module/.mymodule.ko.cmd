@@ -1,0 +1,1 @@
+cmd_/home/alexstolt/part3/mymodule.ko := ld -r -m elf_x86_64  -z max-page-size=0x200000  --build-id  -T ./scripts/module-common.lds -o /home/alexstolt/part3/mymodule.ko /home/alexstolt/part3/mymodule.o /home/alexstolt/part3/mymodule.mod.o;  true

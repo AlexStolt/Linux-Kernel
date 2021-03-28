@@ -1,0 +1,1 @@
+cmd_/home/alexstolt/project_1_omada_2824_2697_2907/sysfs_module/sysfs_module.mod := { echo  /home/alexstolt/project_1_omada_2824_2697_2907/sysfs_module/sysfs_module.o;  echo; } > /home/alexstolt/project_1_omada_2824_2697_2907/sysfs_module/sysfs_module.mod

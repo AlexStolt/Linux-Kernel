@@ -1,0 +1,195 @@
+diff -ruN linux-5.4.86-orig/Makefile linux-5.4.86-dev/Makefile
+--- linux-5.4.86-orig/Makefile	2020-12-30 10:51:48.000000000 +0000
++++ linux-5.4.86-dev/Makefile	2021-03-18 13:50:30.740035241 +0000
+@@ -2,7 +2,7 @@
+ VERSION = 5
+ PATCHLEVEL = 4
+ SUBLEVEL = 86
+-EXTRAVERSION =
++EXTRAVERSION = -dev
+ NAME = Kleptomaniac Octopus
+ 
+ # *DOCUMENTATION*
+diff -ruN linux-5.4.86-orig/arch/x86/entry/syscalls/syscall_64.tbl linux-5.4.86-dev/arch/x86/entry/syscalls/syscall_64.tbl
+--- linux-5.4.86-orig/arch/x86/entry/syscalls/syscall_64.tbl	2020-12-30 10:51:48.000000000 +0000
++++ linux-5.4.86-dev/arch/x86/entry/syscalls/syscall_64.tbl	2021-03-19 17:10:25.252674655 +0000
+@@ -357,7 +357,8 @@
+ 433	common	fspick			__x64_sys_fspick
+ 434	common	pidfd_open		__x64_sys_pidfd_open
+ 435	common	clone3			__x64_sys_clone3/ptregs
+-
++436	common 	hello_syscall		__x64_sys_hello_syscall
++437	common	find_roots		__x64_sys_find_roots
+ #
+ # x32-specific system call numbers start at 512 to avoid cache impact
+ # for native 64-bit operation. The __x32_compat_sys stubs are created
+diff -ruN linux-5.4.86-orig/certs/signing_key.pem linux-5.4.86-dev/certs/signing_key.pem
+--- linux-5.4.86-orig/certs/signing_key.pem	1970-01-01 00:00:00.000000000 +0000
++++ linux-5.4.86-dev/certs/signing_key.pem	2021-03-18 13:51:10.794054652 +0000
+@@ -0,0 +1,83 @@
++-----BEGIN PRIVATE KEY-----
++MIIJQgIBADANBgkqhkiG9w0BAQEFAASCCSwwggkoAgEAAoICAQDXeAcIylxKqJq6
++5n29M1C9RVqciI3hDQ6Zr5N27ydPz1k9fN/6v7soDTziSIBT9v1MBlNcLvktvz6R
++hdhhIwmxk+flIseCIBnP0nTTaW7vUnpznpoIEveVaQgYQ/OlH58qfl3YGy7b9arx
++wi4BIqVjlSxCnjuV9sSOPRCRhunY557ijj/b2TyvYcinTmg28jeVCe3rogXHBg8/
++QhxwiWj//2zUr7peEgL98BvXjf8ALASDsIYAMyr04ANdOJOQ0R0muTYoqqXW4eOF
++ayPOSCCoHn73aFYpkHd+c5AkYdVt+2XgUaQRP1hgCJtFdBG4VaYq8qHiTMR2GvsH
++BrT2qlbz+4SIFx/HVsN4oSgPtxDvKeUo5zxj7hLJdiOlHq7m3jm+y13fsgy4N1pm
++vua0UzkkFZ37XLbziOsX0ycGMvxheK9nDxR7+uyd25x1wvF1uIOMdSM2oTkMyYLk
++gKNL8FBML9pqVmzz78lInnh0kjxBXcsG1cYZdH5ZRikd0FfKM0kLGJQJ9WPutlEz
++IzGJMqbIk+iDVlx4YSH+pd84t2dMXE4ZvDkDd29gRiFdpVoxCcAjDBqumBFUTf69
++IxAYFnW+8ub1CaNI5YS+6+N5hi3bSGUp336kCayme4odWKiMs2SINy9HgOFFAHQP
++vU4IhOarBa48qzsnRVZupvPQ7t67owIDAQABAoICAAtr72OF5pKGkX0qzquC1trR
++nFYD3xF48bcv2W9Kihju8toRjoXqN++NlBaipTrOMusewrh2PPsx0g1AvRGZG+Bv
++6LD6wPyi2vtrOooiYqEJDDioxZ178+fVo3o1z+qG3JcSD8Nu3XMHeMJL+shQn9fB
++hpEZdisi45RupDwynJ7E2GVGCRiMUW0yj8Jeo6OV/2BFIHmHIytDpPdDd+J3Rjub
++vJchoY1vAv2XBsLMYiIOM0cPymqkS7ijT0pXv2rDyvnMg5RwR042tyrRXRqINEL1
++KuHOhBK797maQp/LF9c2plXXvgy0AOlGS4TI/E97Ks3IAtDOJPPlxjy/HESfDvDT
++E+UZZ9A4SYzf+IAsb0K++lW+YKZSpoNm4CK9d29ivXTomp8Va4V8xenJxSjgIpUX
++dtqB4p/Zank232ECyH6YhnFRUSff+Vsdav6F4HUOuiEWMZ70V2LiLzwAkRZYU2sa
++kHoAbZJen/yufPpZLgJcn1R7BeJElBehLxT3pqVp0ZR83bc0sAif0eicesCYJhH4
++pMhQrR/Ym7hPywiFGwygyGa7OSymC0kX0d+0jd0OP6GbwPM1kbyAN+ai6h73bIGJ
++Xek+3TlhZoWFeYA8H6dJFg9VvtCL+2iILpN3zRO4ctkTW8asVqJoobjiM+icjY0c
++WxAAo6eCslDXDbV/WgHxAoIBAQDsiMkbJ4qG4xQr/rb10ltfyc4zPhsvuChIyhFF
++lECD65FKrINznG6LgLlPCuQT/Xd3DgTtzDZ3j9EyzzRA4WkCDegTYbOk9JA2dvfA
++cYZKeUib22h03Kxs78jrsVg95proWvAuYu5KX8JeABUtnjoXxhtqctA47zGiQqqU
++nH+LfUaEyWSGEG24r5dC027+yjtTG0/LsRwbqcGFjOuKJJWOhQGMpbC6Hh8yAOLo
++lSCVhZva6+v58Q6xbeFEAn4kcZFSQBzASrxjiKeVCUSK+3KUFSn149pSjG+kDv2Z
++aOTuswZPeOtgR1H4VU/tAvjfvNA8upHFzqaHb9FCze8QXL8XAoIBAQDpM3Fdw1sE
++giFvT/MkB/Wh8I+Pafe8YF+jSdYNHdRSlFtVZcbxwZMxRhuzb7xnENfyIZOiRPR6
++23NUsW+hhk8yBbnz/+wQ53doRS7zGZWWe3eONi61138MZBRf9ImgTW/9sPSQHwnn
++2sOG8XUxmOdkjLki70RVxDJOEoF5qPAhKhGf3J8RWntA8eZGZt21zVzcFcoOncNP
++YEua/YjbDdL3RV9APIaHFhIhUeMNH7toPXx6iXnF/xsrWRYGykHYaTXj5eDswZz3
++5XlY/NzgFk2IJYXlUdAkMNSRsDTxK6WXs0+iFgHsCZvWJgGywjtiF+Yj33M1VFJK
++g8Gxe3hEPJ9VAoIBAQDd2T2mNmP7N6iHyxOXZIFHSmQYM7wT+cnu23dvpykLkjpn
++q35vRN16AnXL6Q8aoLUX+RIuZ0b+xOkVmroL0F9JCfoNk6mGoctRCiw9Vzz5ROAR
++Lqy+Tut6ETyFs4RsKopIPGLhXvDY2Q/YUoOKkcky2yCDqsQZYl9PLPAJCu+lyQ4H
++JU0fYPFIM4jPqLeGSe9ydz9UcP1IBOP5er7AhqevUJivbghfyDjCEYrBUn2JQBN6
++NaTSfIGncMPDogLl8461cmSFBpPDVzy20EZ1hHlm4qLEeb0fh5B+c4DwDi4Ko+bb
++SzKYzsvW+01Ho24Bi3pUOzjWKoiOpxXCbpw24IZpAoIBAEjJ7dC+cWJu29DKu7G7
++akgptiWlhdYenrtxCIb/kI5WEEwPgJFlQnRW1b6kWcIx17WUFWjI7SaL6Ou+loFs
++UrviXbBzaVO9a9/3+DeY/MADucWB1AKeSOGtO07YHT0T7qjY2v1BMu5TskQkidf5
++SgBwjDkDRekfXDRSQmee+5TedLHZQy0/eMlEuAOxh/J/L0Ti6Da3t4bHH9I44Ma/
++AeJ8nMaIHdV8ZhxQWvZ1uSFIT9pPntrWTbyyCdYEu5i4/kEsN5CuvjgCQGYuRyMK
++0xhz3d8+MiGZvD/dKCk+3mkDZw/InsD2HtYw9sa9KZvsqcD4thUnRKhNh9/GEjv6
++UCECggEAYb8ywyE0KDlDy2oUkvfwDH8u5eIw0BN/9m4fDwtXKtWebWya5qSm/n9u
++2pD4qTmqJDweLp7EY+Oh3wwVPXczKnkTxIC2J0mf3pEaStQSEeHHqK4gWVdqCUBj
++pJuIPw14D1zdSCI8ANCIMNknOuDBv7gjoIFsXvkBr4UGfqbDxMoH78VOG3YXvHNe
++aCBpkYrMclC8myc//XiODpP1EVYixPxfaPtLN+8hhOR2S1ZKXygBRgy2R0kWvTbw
++RuY8Ny/cwM1foMKFYGAY7lN9T7htkoqzXhoDXFF4hCqdyDLOpOL0BZQkCYgcp4YS
++kb7SXZx433sbO46mnT3gFoKlVyHyaQ==
++-----END PRIVATE KEY-----
++-----BEGIN CERTIFICATE-----
++MIIFSTCCAzGgAwIBAgIUcWcVT5j8jKJWfsY5g8Us/IRHGDMwDQYJKoZIhvcNAQEN
++BQAwLjEsMCoGA1UEAwwjQnVpbGQgdGltZSBhdXRvZ2VuZXJhdGVkIGtlcm5lbCBr
++ZXkwIBcNMjEwMzE4MTM1MTEwWhgPMjEyMTAyMjIxMzUxMTBaMC4xLDAqBgNVBAMM
++I0J1aWxkIHRpbWUgYXV0b2dlbmVyYXRlZCBrZXJuZWwga2V5MIICIjANBgkqhkiG
++9w0BAQEFAAOCAg8AMIICCgKCAgEA13gHCMpcSqiauuZ9vTNQvUVanIiN4Q0Oma+T
++du8nT89ZPXzf+r+7KA084kiAU/b9TAZTXC75Lb8+kYXYYSMJsZPn5SLHgiAZz9J0
++02lu71J6c56aCBL3lWkIGEPzpR+fKn5d2Bsu2/Wq8cIuASKlY5UsQp47lfbEjj0Q
++kYbp2Oee4o4/29k8r2HIp05oNvI3lQnt66IFxwYPP0IccIlo//9s1K+6XhIC/fAb
++143/ACwEg7CGADMq9OADXTiTkNEdJrk2KKql1uHjhWsjzkggqB5+92hWKZB3fnOQ
++JGHVbftl4FGkET9YYAibRXQRuFWmKvKh4kzEdhr7Bwa09qpW8/uEiBcfx1bDeKEo
++D7cQ7ynlKOc8Y+4SyXYjpR6u5t45vstd37IMuDdaZr7mtFM5JBWd+1y284jrF9Mn
++BjL8YXivZw8Ue/rsnducdcLxdbiDjHUjNqE5DMmC5ICjS/BQTC/aalZs8+/JSJ54
++dJI8QV3LBtXGGXR+WUYpHdBXyjNJCxiUCfVj7rZRMyMxiTKmyJPog1ZceGEh/qXf
++OLdnTFxOGbw5A3dvYEYhXaVaMQnAIwwarpgRVE3+vSMQGBZ1vvLm9QmjSOWEvuvj
++eYYt20hlKd9+pAmspnuKHViojLNkiDcvR4DhRQB0D71OCITmqwWuPKs7J0VWbqbz
++0O7eu6MCAwEAAaNdMFswDAYDVR0TAQH/BAIwADALBgNVHQ8EBAMCB4AwHQYDVR0O
++BBYEFNIcrs6KDnH1beJkv3IX8Aa1ZTVDMB8GA1UdIwQYMBaAFNIcrs6KDnH1beJk
++v3IX8Aa1ZTVDMA0GCSqGSIb3DQEBDQUAA4ICAQCzloZJyGJtdBtHTigeSqe/643E
++pRVn/FWgLNAEM7mAihPkIlPBQZpfoT1Qu8irbVhOa9pej9AUveHCZu/v3gBbxqrz
++DBbCacm4bnAVcfaFin+Esu6zUvD1YHaAuU5QIdn2CgfS8Y9TXnqCGOyzOLDw2N8Z
++ZjhqmzJrxUxg+s6O0AdD97ZbHFtiyFQbLlRErNZTRw83s8i8PAEhhLbOY6xGWZvX
++Oq3ADy6MYS5idk7/we3KGjPsqPpoOAPlnS5MkkRAaJzyeOY8FtJ7/jy0KXoEIirX
++x9of9F/u3phVyT9/WAqRwqH9qeAzrkJ13UlTTx7YQd6N89vtjcCNqx8hnWw9zowk
++pRNKlwYnwdQZ0fCjRWUGPekjChny701M8Lr5mLQilPdGrRgqaYVFEgZ2Erm9iF7Z
++ehGs4eOy9Y2iddA5t4jnIl0EVz+hfBr+kOZnx4s2tyCWIttSIis4484s/yC0bhP9
++li0eASHoOa4utVv7SqiRGrh7jSPU0hUJ6/h+bSd7wXf88Zdyo53TbimsMKkIaPuu
++VbjbwW2PCuoo7xmL48U4pr4M2q1d+UiIy91VnumC6FvDraU/S7RJLvDRLXQ/0XC0
++xEhtc6grl03Gi5i/t+AVgD+eEMxfOuhU6Vz6lVryOu01NilVphNp+FOt5fsiFCDc
++0CeMxsro5cPvsnloRA==
++-----END CERTIFICATE-----
+Binary files linux-5.4.86-orig/certs/signing_key.x509 and linux-5.4.86-dev/certs/signing_key.x509 differ
+diff -ruN linux-5.4.86-orig/certs/x509.genkey linux-5.4.86-dev/certs/x509.genkey
+--- linux-5.4.86-orig/certs/x509.genkey	1970-01-01 00:00:00.000000000 +0000
++++ linux-5.4.86-dev/certs/x509.genkey	2021-03-18 13:51:10.086038490 +0000
+@@ -0,0 +1,17 @@
++[ req ]
++default_bits = 4096
++distinguished_name = req_distinguished_name
++prompt = no
++string_mask = utf8only
++x509_extensions = myexts
++
++[ req_distinguished_name ]
++#O = Unspecified company
++CN = Build time autogenerated kernel key
++#emailAddress = unspecified.user@unspecified.company
++
++[ myexts ]
++basicConstraints=critical,CA:FALSE
++keyUsage=digitalSignature
++subjectKeyIdentifier=hash
++authorityKeyIdentifier=keyid
+diff -ruN linux-5.4.86-orig/include/linux/syscalls.h linux-5.4.86-dev/include/linux/syscalls.h
+--- linux-5.4.86-orig/include/linux/syscalls.h	2020-12-30 10:51:48.000000000 +0000
++++ linux-5.4.86-dev/include/linux/syscalls.h	2021-03-19 17:08:35.926138753 +0000
+@@ -1421,4 +1421,6 @@
+ 			    unsigned int nsops,
+ 			    const struct old_timespec32 __user *timeout);
+ 
++asmlinkage long sys_hello_syscall(void);
++asmlinkage long find_roots(void);
+ #endif
+diff -ruN linux-5.4.86-orig/kernel/Makefile linux-5.4.86-dev/kernel/Makefile
+--- linux-5.4.86-orig/kernel/Makefile	2020-12-30 10:51:48.000000000 +0000
++++ linux-5.4.86-dev/kernel/Makefile	2021-03-19 17:06:55.852108322 +0000
+@@ -10,7 +10,7 @@
+ 	    extable.o params.o \
+ 	    kthread.o sys_ni.o nsproxy.o \
+ 	    notifier.o ksysfs.o cred.o reboot.o \
+-	    async.o range.o smpboot.o ucount.o
++	    async.o range.o smpboot.o ucount.o my_syscall.o find_roots.o
+ 
+ obj-$(CONFIG_MODULES) += kmod.o
+ obj-$(CONFIG_MULTIUSER) += groups.o
+diff -ruN linux-5.4.86-orig/kernel/find_roots.c linux-5.4.86-dev/kernel/find_roots.c
+--- linux-5.4.86-orig/kernel/find_roots.c	1970-01-01 00:00:00.000000000 +0000
++++ linux-5.4.86-dev/kernel/find_roots.c	2021-03-19 18:55:51.358702066 +0000
+@@ -0,0 +1,24 @@
++#include <linux/kernel.h>
++#include <linux/syscalls.h>
++#include <linux/sched.h>
++#include <asm/current.h>
++
++// Get current pointer. Find real parent process pointer and pid. Do that    //
++// iteratively until pid == 1.                                               //
++
++SYSCALL_DEFINE0(find_roots){
++  struct task_struct *curr_task;
++  
++  curr_task = current;
++  
++  printk("%s system call called by process %d", curr_task->comm, curr_task->pid);
++  
++  for(; ; curr_task = curr_task->real_parent){
++   
++    printk("id: %d, name: %s", curr_task->pid, curr_task->comm);
++
++    if (curr_task->pid == 1){
++      break;
++    }
++  }
++}
+diff -ruN linux-5.4.86-orig/kernel/my_syscall.c linux-5.4.86-dev/kernel/my_syscall.c
+--- linux-5.4.86-orig/kernel/my_syscall.c	1970-01-01 00:00:00.000000000 +0000
++++ linux-5.4.86-dev/kernel/my_syscall.c	2021-03-19 07:46:28.274298157 +0000
+@@ -0,0 +1,7 @@
++#include<linux/kernel.h>
++#include<linux/syscalls.h>
++
++SYSCALL_DEFINE0(hello_syscall){
++	printk("Hellofromkernelspace\n");
++	return(0);
++}
