@@ -1,0 +1,8 @@
+Process (FIRST_INTERACTIVE:1) completed on 370000000, finished in 330000000 clock ticks, accumulated end time is 370000000, number of finished processes 1
+Process (SECOND_INTERACTIVE:2) completed on 600000000, finished in 550000000 clock ticks, accumulated end time is 970000000, number of finished processes 2
+Process (THIRD_INTERACTIVE:3) completed on 1420000000, finished in 1360000000 clock ticks, accumulated end time is 2390000000, number of finished processes 3
+Process (FOURTH_INTERACTIVE:4) completed on 2270000000, finished in 2200000000 clock ticks, accumulated end time is 4660000000, number of finished processes 4
+Process (FOURTH_INTERACTIVE:4):(CHILD_ZERO_INTERACTIVE:5) completed on 2870000000, finished in 2670000000 clock ticks, accumulated end time is 7530000000, number of finished processes 5
+Process (FOURTH_INTERACTIVE:4):(CHILD_ONE_INTERACTIVE:6) completed on 2970000000, finished in 1660000000 clock ticks, accumulated end time is 10500000000, number of finished processes 6
+Process (FOURTH_INTERACTIVE:4) completed on 2970000000, finished in 770000000 clock ticks, accumulated end time is 13470000000, number of finished processes 7
+Mean Time to completion: 1924285714.285714

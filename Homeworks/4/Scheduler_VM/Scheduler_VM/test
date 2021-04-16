@@ -1,0 +1,4 @@
+Process (Papakia:1) completed on 650000000, finished in 610000000 clock ticks, accumulated end time is 650000000, number of finished processes 1
+Process (PEOS:3) completed on 1320000000, finished in 1270000000 clock ticks, accumulated end time is 1970000000, number of finished processes 2
+Process (Vatraxakia:2) completed on 1320000000, finished in 1270000000 clock ticks, accumulated end time is 3290000000, number of finished processes 3
+Mean Time to completion: 1096666666.666667
