@@ -1,6 +1,7 @@
 # C-OS
 ## Installation and Kernel Compilation
 ### Basic Packages
+```sudo apt-get update```
 ```sudo apt-get install build-essential libncurses-dev flex bison libssl-dev```
 ### Kernel
 ```
