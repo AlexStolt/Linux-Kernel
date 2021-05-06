@@ -1,8 +1,8 @@
 # Expected Burst and Goodness Based Schedulers
 
 ## How to Compile
-1. Go to ```Expected Burst and Goodness/``` Path
-2. make
+1. On Current Path
+2. ```make```
 
 ## How to Execute
 ### Export Measurements of Each Process to a File
@@ -15,12 +15,12 @@
 
 ## View Debug Output
 1. Open schedule.c
-2. Add #define DEBUG
+2. Add ```#define DEBUG```
 3. Compile and Execute
 
 ## Hide Debug Output
 1. Open schedule.c
-2. Remove ```#define DEBUG```
+2. **Remove** ```#define DEBUG```
 3. Compile and Execute
 
 ## Measurements Output Pipes
@@ -40,15 +40,14 @@
   
 ## Testing with Configuration Files
 ### Configuration Files
-1. Required Files Path
-    1. **configs/basic/**
-        1. **interactive.conf** (tests interactive processes with children)
-        2. **non_interactive.conf** (tests non-interactive processes with children)
-        3. **complex.conf** (tests both interactive and non-interactive processes)
-2. Not Required Files
-    1. **configs/additional**
-        1. **noninteractive/** (non-interactive processes)	
-        1. **interactive/**    (interactive processes)
-        3. **complex/**	(complex processes)  
-    2. **configs/seed_validation** (configs that test interactive processes with different seeds)
-3. Round Robin (scripts for round robin calculations on configs/round_robin_configs/)
+#### Basic Configuration Files
+1. **configs/basic/**
+    1. **interactive.conf** (Interactive Processes with Children)
+    2. **non_interactive.conf** (Non-Interactive Processes with Children)
+    3. **complex.conf** (Both Interactive and Non-Interactive Processes)
+#### Additional Configuration Files
+1. **configs/additional**
+    1. **noninteractive/** (Non-Interactive Processes)	
+    2. **interactive/**    (Interactive Processes)
+    3. **complex/**	(Both Interactive and Non-Interactive Processes)  
+2. **configs/seed_validation** (Configurations that test Interactive Processes with Different Seeds)
