@@ -20,7 +20,7 @@ sudo cp -R linux-5.4.86-orig linux-5.4.86-dev
 * GRUB_TIMEOUT=-1
 ### Compile Kernel and Install Modules
 ```
-cd linux-5.4.86-dev/
+cd /usr/src/linux-5.4.86-dev/
 sudo make localmodconfig
 sudo make menuconfig
 sudo nano Makefile
