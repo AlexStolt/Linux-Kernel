@@ -1,0 +1,1370 @@
+Binary files linux-5.4.86-orig/.tmp_48091/tmp and linux-5.4.86-dev/.tmp_48091/tmp differ
+diff -ruN linux-5.4.86-orig/Makefile linux-5.4.86-dev/Makefile
+--- linux-5.4.86-orig/Makefile	2020-12-30 10:51:48.000000000 +0000
++++ linux-5.4.86-dev/Makefile	2021-05-05 11:19:36.554825546 +0000
+@@ -2,7 +2,7 @@
+ VERSION = 5
+ PATCHLEVEL = 4
+ SUBLEVEL = 86
+-EXTRAVERSION =
++EXTRAVERSION = -dev
+ NAME = Kleptomaniac Octopus
+ 
+ # *DOCUMENTATION*
+diff -ruN linux-5.4.86-orig/arch/x86/entry/syscalls/syscall_64.tbl linux-5.4.86-dev/arch/x86/entry/syscalls/syscall_64.tbl
+--- linux-5.4.86-orig/arch/x86/entry/syscalls/syscall_64.tbl	2020-12-30 10:51:48.000000000 +0000
++++ linux-5.4.86-dev/arch/x86/entry/syscalls/syscall_64.tbl	2021-05-17 14:56:56.244924449 +0000
+@@ -357,7 +357,10 @@
+ 433	common	fspick			__x64_sys_fspick
+ 434	common	pidfd_open		__x64_sys_pidfd_open
+ 435	common	clone3			__x64_sys_clone3/ptregs
+-
++436	common	slob_get_total_alloc_mem	__x64_sys_slob_get_total_alloc_mem
++437	common	slob_get_total_free_mem	__x64_sys_slob_get_total_free_mem
++438	common	allocate_mem		__x64_sys_allocate_mem
++439	common	deallocate_mem		__x64_sys_deallocate_mem
+ #
+ # x32-specific system call numbers start at 512 to avoid cache impact
+ # for native 64-bit operation. The __x32_compat_sys stubs are created
+diff -ruN linux-5.4.86-orig/certs/signing_key.pem linux-5.4.86-dev/certs/signing_key.pem
+--- linux-5.4.86-orig/certs/signing_key.pem	1970-01-01 00:00:00.000000000 +0000
++++ linux-5.4.86-dev/certs/signing_key.pem	2021-05-05 11:21:22.751421648 +0000
+@@ -0,0 +1,83 @@
++-----BEGIN PRIVATE KEY-----
++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
++RvZNjEalLgpqEITLuExS/P5sxuAkjg==
++-----END PRIVATE KEY-----
++-----BEGIN CERTIFICATE-----
++MIIFSTCCAzGgAwIBAgIUVXnd3rbB6SyLCI110/a/aOQdig8wDQYJKoZIhvcNAQEN
++BQAwLjEsMCoGA1UEAwwjQnVpbGQgdGltZSBhdXRvZ2VuZXJhdGVkIGtlcm5lbCBr
++ZXkwIBcNMjEwNTA1MTEyMTIyWhgPMjEyMTA0MTExMTIxMjJaMC4xLDAqBgNVBAMM
++I0J1aWxkIHRpbWUgYXV0b2dlbmVyYXRlZCBrZXJuZWwga2V5MIICIjANBgkqhkiG
++9w0BAQEFAAOCAg8AMIICCgKCAgEAo49WIXsjhjf3YOHRMsqMWJGxZuU7m8wNyogz
++or90hrIdXvQOYSg38xRfx7l3oVI6X1uHQFIQ8Uc7uZL/Lt1qSg4fVbYYl1SoGtxN
++ArGUcVKpAXYF1x516bU/diOACsMB9TodbupOJHU55W3QgeYZGXDSU66Ntjz/kHYQ
++Dj03eOzz1H0Zkn/5mwIUAQ1e1zRRiHCtka9aGwD3LsY/k+4xLxN3vXU5+QuesXZw
++jHY58IvkptxIHLCcadGh6E98jhgxggJfbseJ2MD97UZMHtU4fheFJu5lWyATBrNa
++jfwYwCTeuAVxriM9cS0wSlPZzdZNBdNVnhGgYk5mQ3qxgU9n4wkyiL2rs+PAp2m9
++d2KGrBDUQyrqkyOfNkPmgAd0rf+uzLduMpKyjqbk9LysZipDQ1fJLjIKpqgRiMAa
++DdCp+HtnwtgxGu77EUVUgdFIKQxCVIC+uiyfflFSUu7v2JjWkwBttvYmngKKcQe0
++A6DJB37HLGSgbZCplZIozBhuc0X0N+JtxRJJBMAS7LXLgdIpPrPix43Q53MCV2/A
++i1ZgkE6mL4x5JJHypz3aimrEYfIM43bdmMhoGXn/Jb2uFShh3sCV7LXLM9814jdV
++Q5ibMUFGM62//BZvpfnX8R6fZ3LaWUCUOz9htAL9R26HL/Oc+XzFNAgXjUXUYB/J
++0KsBu1kCAwEAAaNdMFswDAYDVR0TAQH/BAIwADALBgNVHQ8EBAMCB4AwHQYDVR0O
++BBYEFPUu20miw0iGlm+9uMTDlQI8Q4wxMB8GA1UdIwQYMBaAFPUu20miw0iGlm+9
++uMTDlQI8Q4wxMA0GCSqGSIb3DQEBDQUAA4ICAQBfS5ARmyl+HitZWPUUd/Ih8hwF
++49ft3HDHV+xz+kpYmVfjqphRkcHamlcaU5Nz5Et9eNp3tLxFd5SGMejyCOw3PEv0
++wtNJmTeeqFClIxTI8hjT3182z5cXdfmWKFHqQtTD/qA5ptoKMSeafkxm2y1tKvl7
++Qnqg67T3H/8YrhqfuGT7LHlepibw0C+yc3nEr4EkTB5oI55R0EYFhnBfrI+JgN3S
+++bz1dhZLcGUdCqOQTp6TUbLTn8C+VoWJ0pigSfs/HY85afCu6ZYvOLP9yE4dmIdZ
++I9bUv/O2yzejcgjpUL2eleKbFepDVELMYfkufj/We63ALK90K6SgcPompDcrEzpO
++Gr9ml2FTGBTlnz60e8gAuRKOg7/5AHZu1JIqaGCxtc/GN1TSv8ehkCbwvazGL8/9
++ABAUIcDGGl9R+l60xhJiR7r6UcAsTNDVzt9U8y+xXPoTFd6OdkkivL1lw9RekOj+
++9D5V518vHOHbD1451gR8k6dAaBBTQyB4i4Tuqx0ArDjUIqXyDOGLMMNMOrMGOwx3
++X4ge3j5pSt+F1eQVMkV0zk9m3ZjcTuA4PoMu4t89WqsYYVtc7VqlnteFDTqKMovn
++4o6nMbOC8mhl+Kx+DKNnSalFeC02EHsm7Wo+Gr6hfIdS5vx61xf7wPDAJlcpcbqE
++8UBceYwnn1jMZ50U/A==
++-----END CERTIFICATE-----
+Binary files linux-5.4.86-orig/certs/signing_key.x509 and linux-5.4.86-dev/certs/signing_key.x509 differ
+diff -ruN linux-5.4.86-orig/certs/x509.genkey linux-5.4.86-dev/certs/x509.genkey
+--- linux-5.4.86-orig/certs/x509.genkey	1970-01-01 00:00:00.000000000 +0000
++++ linux-5.4.86-dev/certs/x509.genkey	2021-05-05 11:21:22.211408883 +0000
+@@ -0,0 +1,17 @@
++[ req ]
++default_bits = 4096
++distinguished_name = req_distinguished_name
++prompt = no
++string_mask = utf8only
++x509_extensions = myexts
++
++[ req_distinguished_name ]
++#O = Unspecified company
++CN = Build time autogenerated kernel key
++#emailAddress = unspecified.user@unspecified.company
++
++[ myexts ]
++basicConstraints=critical,CA:FALSE
++keyUsage=digitalSignature
++subjectKeyIdentifier=hash
++authorityKeyIdentifier=keyid
+diff -ruN linux-5.4.86-orig/include/linux/slab.h linux-5.4.86-dev/include/linux/slab.h
+--- linux-5.4.86-orig/include/linux/slab.h	2020-12-30 10:51:48.000000000 +0000
++++ linux-5.4.86-dev/include/linux/slab.h	2021-05-16 12:34:38.180760882 +0000
+@@ -18,6 +18,9 @@
+ #include <linux/workqueue.h>
+ #include <linux/percpu-refcount.h>
+ 
++//Measurements
++extern long int allocated_page_memory;
++extern long int total_unused_memory;
+ 
+ /*
+  * Flags to pass to kmem_cache_create().
+diff -ruN linux-5.4.86-orig/include/linux/syscalls.h linux-5.4.86-dev/include/linux/syscalls.h
+--- linux-5.4.86-orig/include/linux/syscalls.h	2020-12-30 10:51:48.000000000 +0000
++++ linux-5.4.86-dev/include/linux/syscalls.h	2021-05-17 15:10:57.438757411 +0000
+@@ -1421,4 +1421,11 @@
+ 			    unsigned int nsops,
+ 			    const struct old_timespec32 __user *timeout);
+ 
++
++
++
++asmlinkage long sys_slob_get_total_alloc_mem(void);
++asmlinkage long sys_slob_get_total_free_mem(void);
++asmlinkage long sys_allocate_mem(size_t);
++asmlinkage void sys_deallocate_mem(void *);
+ #endif
+diff -ruN linux-5.4.86-orig/kernel/Makefile linux-5.4.86-dev/kernel/Makefile
+--- linux-5.4.86-orig/kernel/Makefile	2020-12-30 10:51:48.000000000 +0000
++++ linux-5.4.86-dev/kernel/Makefile	2021-05-17 14:48:20.293155337 +0000
+@@ -10,7 +10,7 @@
+ 	    extable.o params.o \
+ 	    kthread.o sys_ni.o nsproxy.o \
+ 	    notifier.o ksysfs.o cred.o reboot.o \
+-	    async.o range.o smpboot.o ucount.o
++	    async.o range.o smpboot.o ucount.o slob_alloc_measurements.o memory_management.o
+ 
+ obj-$(CONFIG_MODULES) += kmod.o
+ obj-$(CONFIG_MULTIUSER) += groups.o
+diff -ruN linux-5.4.86-orig/kernel/memory_management.c linux-5.4.86-dev/kernel/memory_management.c
+--- linux-5.4.86-orig/kernel/memory_management.c	1970-01-01 00:00:00.000000000 +0000
++++ linux-5.4.86-dev/kernel/memory_management.c	2021-05-17 15:10:01.998743024 +0000
+@@ -0,0 +1,16 @@
++#include <linux/kernel.h>
++#include <linux/syscalls.h>
++#include <linux/slab.h>
++
++SYSCALL_DEFINE1(allocate_mem, size_t, size){
++	return (long int) kmalloc(size, GFP_KERNEL);
++}
++
++
++SYSCALL_DEFINE1(deallocate_mem, const void *, objp){
++	kfree(objp);
++}
++
++
++
++
+diff -ruN linux-5.4.86-orig/kernel/slob_alloc_measurements.c linux-5.4.86-dev/kernel/slob_alloc_measurements.c
+--- linux-5.4.86-orig/kernel/slob_alloc_measurements.c	1970-01-01 00:00:00.000000000 +0000
++++ linux-5.4.86-dev/kernel/slob_alloc_measurements.c	2021-05-16 12:36:35.204387527 +0000
+@@ -0,0 +1,12 @@
++#include <linux/kernel.h>
++#include <linux/syscalls.h>
++#include <linux/slab.h>
++   
++  
++SYSCALL_DEFINE0(slob_get_total_alloc_mem){
++	return allocated_page_memory;
++}
++  
++SYSCALL_DEFINE0(slob_get_total_free_mem){
++     return total_unused_memory;     
++}     
+diff -ruN linux-5.4.86-orig/mm/slob-orig.c linux-5.4.86-dev/mm/slob-orig.c
+--- linux-5.4.86-orig/mm/slob-orig.c	1970-01-01 00:00:00.000000000 +0000
++++ linux-5.4.86-dev/mm/slob-orig.c	2021-05-13 15:42:47.334957941 +0000
+@@ -0,0 +1,718 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * SLOB Allocator: Simple List Of Blocks
++ *
++ * Matt Mackall <mpm@selenic.com> 12/30/03
++ *
++ * NUMA support by Paul Mundt, 2007.
++ *
++ * How SLOB works:
++ *
++ * The core of SLOB is a traditional K&R style heap allocator, with
++ * support for returning aligned objects. The granularity of this
++ * allocator is as little as 2 bytes, however typically most architectures
++ * will require 4 bytes on 32-bit and 8 bytes on 64-bit.
++ *
++ * The slob heap is a set of linked list of pages from alloc_pages(),
++ * and within each page, there is a singly-linked list of free blocks
++ * (slob_t). The heap is grown on demand. To reduce fragmentation,
++ * heap pages are segregated into three lists, with objects less than
++ * 256 bytes, objects less than 1024 bytes, and all other objects.
++ *
++ * Allocation from heap involves first searching for a page with
++ * sufficient free blocks (using a next-fit-like approach) followed by
++ * a first-fit scan of the page. Deallocation inserts objects back
++ * into the free list in address order, so this is effectively an
++ * address-ordered first fit.
++ *
++ * Above this is an implementation of kmalloc/kfree. Blocks returned
++ * from kmalloc are prepended with a 4-byte header with the kmalloc size.
++ * If kmalloc is asked for objects of PAGE_SIZE or larger, it calls
++ * alloc_pages() directly, allocating compound pages so the page order
++ * does not have to be separately tracked.
++ * These objects are detected in kfree() because PageSlab()
++ * is false for them.
++ *
++ * SLAB is emulated on top of SLOB by simply calling constructors and
++ * destructors for every SLAB allocation. Objects are returned with the
++ * 4-byte alignment unless the SLAB_HWCACHE_ALIGN flag is set, in which
++ * case the low-level allocator will fragment blocks to create the proper
++ * alignment. Again, objects of page-size or greater are allocated by
++ * calling alloc_pages(). As SLAB objects know their size, no separate
++ * size bookkeeping is necessary and there is essentially no allocation
++ * space overhead, and compound pages aren't needed for multi-page
++ * allocations.
++ *
++ * NUMA support in SLOB is fairly simplistic, pushing most of the real
++ * logic down to the page allocator, and simply doing the node accounting
++ * on the upper levels. In the event that a node id is explicitly
++ * provided, __alloc_pages_node() with the specified node id is used
++ * instead. The common case (or when the node id isn't explicitly provided)
++ * will default to the current node, as per numa_node_id().
++ *
++ * Node aware pages are still inserted in to the global freelist, and
++ * these are scanned for by matching against the node id encoded in the
++ * page flags. As a result, block allocations that can be satisfied from
++ * the freelist will only be done so on pages residing on the same node,
++ * in order to prevent random node placement.
++ */
++
++#include <linux/kernel.h>
++#include <linux/slab.h>
++
++#include <linux/mm.h>
++#include <linux/swap.h> /* struct reclaim_state */
++#include <linux/cache.h>
++#include <linux/init.h>
++#include <linux/export.h>
++#include <linux/rcupdate.h>
++#include <linux/list.h>
++#include <linux/kmemleak.h>
++
++#include <trace/events/kmem.h>
++
++#include <linux/atomic.h>
++
++#include "slab.h"
++/*
++ * slob_block has a field 'units', which indicates size of block if +ve,
++ * or offset of next block if -ve (in SLOB_UNITs).
++ *
++ * Free blocks of size 1 unit simply contain the offset of the next block.
++ * Those with larger size contain their size in the first SLOB_UNIT of
++ * memory, and the offset of the next free block in the second SLOB_UNIT.
++ */
++#if PAGE_SIZE <= (32767 * 2)
++typedef s16 slobidx_t;
++#else
++typedef s32 slobidx_t;
++#endif
++
++struct slob_block {
++	slobidx_t units;
++};
++typedef struct slob_block slob_t;
++
++/*
++ * All partially free slob pages go on these lists.
++ */
++#define SLOB_BREAK1 256
++#define SLOB_BREAK2 1024
++static LIST_HEAD(free_slob_small);
++static LIST_HEAD(free_slob_medium);
++static LIST_HEAD(free_slob_large);
++
++/*
++ * slob_page_free: true for pages on free_slob_pages list.
++ */
++static inline int slob_page_free(struct page *sp)
++{
++	return PageSlobFree(sp);
++}
++
++static void set_slob_page_free(struct page *sp, struct list_head *list)
++{
++	list_add(&sp->slab_list, list);
++	__SetPageSlobFree(sp);
++}
++
++static inline void clear_slob_page_free(struct page *sp)
++{
++	list_del(&sp->slab_list);
++	__ClearPageSlobFree(sp);
++}
++
++#define SLOB_UNIT sizeof(slob_t)
++#define SLOB_UNITS(size) DIV_ROUND_UP(size, SLOB_UNIT)
++
++/*
++ * struct slob_rcu is inserted at the tail of allocated slob blocks, which
++ * were created with a SLAB_TYPESAFE_BY_RCU slab. slob_rcu is used to free
++ * the block using call_rcu.
++ */
++struct slob_rcu {
++	struct rcu_head head;
++	int size;
++};
++
++/*
++ * slob_lock protects all slob allocator structures.
++ */
++static DEFINE_SPINLOCK(slob_lock);
++
++/*
++ * Encode the given size and next info into a free slob block s.
++ */
++static void set_slob(slob_t *s, slobidx_t size, slob_t *next)
++{
++	slob_t *base = (slob_t *)((unsigned long)s & PAGE_MASK);
++	slobidx_t offset = next - base;
++
++	if (size > 1) {
++		s[0].units = size;
++		s[1].units = offset;
++	} else
++		s[0].units = -offset;
++}
++
++/*
++ * Return the size of a slob block.
++ */
++static slobidx_t slob_units(slob_t *s)
++{
++	if (s->units > 0)
++		return s->units;
++	return 1;
++}
++
++/*
++ * Return the next free slob block pointer after this one.
++ */
++static slob_t *slob_next(slob_t *s)
++{
++	slob_t *base = (slob_t *)((unsigned long)s & PAGE_MASK);
++	slobidx_t next;
++
++	if (s[0].units < 0)
++		next = -s[0].units;
++	else
++		next = s[1].units;
++	return base+next;
++}
++
++/*
++ * Returns true if s is the last free block in its page.
++ */
++static int slob_last(slob_t *s)
++{
++	return !((unsigned long)slob_next(s) & ~PAGE_MASK);
++}
++
++static void *slob_new_pages(gfp_t gfp, int order, int node)
++{
++	struct page *page;
++
++#ifdef CONFIG_NUMA
++	if (node != NUMA_NO_NODE)
++		page = __alloc_pages_node(node, gfp, order);
++	else
++#endif
++		page = alloc_pages(gfp, order);
++
++	if (!page)
++		return NULL;
++
++	mod_node_page_state(page_pgdat(page), NR_SLAB_UNRECLAIMABLE,
++			    1 << order);
++	return page_address(page);
++}
++
++static void slob_free_pages(void *b, int order)
++{
++	struct page *sp = virt_to_page(b);
++
++	if (current->reclaim_state)
++		current->reclaim_state->reclaimed_slab += 1 << order;
++
++	mod_node_page_state(page_pgdat(sp), NR_SLAB_UNRECLAIMABLE,
++			    -(1 << order));
++	__free_pages(sp, order);
++}
++
++/*
++ * slob_page_alloc() - Allocate a slob block within a given slob_page sp.
++ * @sp: Page to look in.
++ * @size: Size of the allocation.
++ * @align: Allocation alignment.
++ * @align_offset: Offset in the allocated block that will be aligned.
++ * @page_removed_from_list: Return parameter.
++ *
++ * Tries to find a chunk of memory at least @size bytes big within @page.
++ *
++ * Return: Pointer to memory if allocated, %NULL otherwise.  If the
++ *         allocation fills up @page then the page is removed from the
++ *         freelist, in this case @page_removed_from_list will be set to
++ *         true (set to false otherwise).
++ */
++static void *slob_page_alloc(struct page *sp, size_t size, int align,
++			      int align_offset, bool *page_removed_from_list)
++{
++	slob_t *prev, *cur, *aligned = NULL;
++	int delta = 0, units = SLOB_UNITS(size);
++
++	*page_removed_from_list = false;
++	for (prev = NULL, cur = sp->freelist; ; prev = cur, cur = slob_next(cur)) {
++		slobidx_t avail = slob_units(cur);
++
++		/*
++		 * 'aligned' will hold the address of the slob block so that the
++		 * address 'aligned'+'align_offset' is aligned according to the
++		 * 'align' parameter. This is for kmalloc() which prepends the
++		 * allocated block with its size, so that the block itself is
++		 * aligned when needed.
++		 */
++		if (align) {
++			aligned = (slob_t *)
++				(ALIGN((unsigned long)cur + align_offset, align)
++				 - align_offset);
++			delta = aligned - cur;
++		}
++		if (avail >= units + delta) { /* room enough? */
++			slob_t *next;
++
++			if (delta) { /* need to fragment head to align? */
++				next = slob_next(cur);
++				set_slob(aligned, avail - delta, next);
++				set_slob(cur, delta, aligned);
++				prev = cur;
++				cur = aligned;
++				avail = slob_units(cur);
++			}
++
++			next = slob_next(cur);
++			if (avail == units) { /* exact fit? unlink. */
++				if (prev)
++					set_slob(prev, slob_units(prev), next);
++				else
++					sp->freelist = next;
++			} else { /* fragment */
++				if (prev)
++					set_slob(prev, slob_units(prev), cur + units);
++				else
++					sp->freelist = cur + units;
++				set_slob(cur + units, avail - units, next);
++			}
++
++			sp->units -= units;
++			if (!sp->units) {
++				clear_slob_page_free(sp);
++				*page_removed_from_list = true;
++			}
++			return cur;
++		}
++		if (slob_last(cur))
++			return NULL;
++	}
++}
++
++/*
++ * slob_alloc: entry point into the slob allocator.
++ */
++static void *slob_alloc(size_t size, gfp_t gfp, int align, int node,
++							int align_offset)
++{
++	struct page *sp;
++	struct list_head *slob_list;
++	slob_t *b = NULL;
++	unsigned long flags;
++	bool _unused;
++
++	if (size < SLOB_BREAK1)
++		slob_list = &free_slob_small;
++	else if (size < SLOB_BREAK2)
++		slob_list = &free_slob_medium;
++	else
++		slob_list = &free_slob_large;
++
++	spin_lock_irqsave(&slob_lock, flags);
++	/* Iterate through each partially free page, try to find room */
++	list_for_each_entry(sp, slob_list, slab_list) {
++		bool page_removed_from_list = false;
++		#ifdef CONFIG_NUMA
++				/*
++				* If there's a node specification, search for a partial
++				* page with a matching node id in the freelist.
++				*/
++				if (node != NUMA_NO_NODE && page_to_nid(sp) != node)
++					continue;
++		#endif
++		/* Enough room on this page? */
++		if (sp->units < SLOB_UNITS(size))
++			continue;
++
++		b = slob_page_alloc(sp, size, align, align_offset, &page_removed_from_list);
++		if (!b)
++			continue;
++
++		/*
++		 * If slob_page_alloc() removed sp from the list then we
++		 * cannot call list functions on sp.  If so allocation
++		 * did not fragment the page anyway so optimisation is
++		 * unnecessary.
++		 */
++		if (!page_removed_from_list) {
++			/*
++			 * Improve fragment distribution and reduce our average
++			 * search time by starting our next search here. (see
++			 * Knuth vol 1, sec 2.5, pg 449)
++			 */
++			if (!list_is_first(&sp->slab_list, slob_list))
++				list_rotate_to_front(&sp->slab_list, slob_list);
++		}
++		break;
++	}
++	spin_unlock_irqrestore(&slob_lock, flags);
++
++	/* Not enough space: must allocate a new page */
++	if (!b) {
++		b = slob_new_pages(gfp & ~__GFP_ZERO, 0, node);
++		if (!b)
++			return NULL;
++		sp = virt_to_page(b);
++		__SetPageSlab(sp);
++
++		spin_lock_irqsave(&slob_lock, flags);
++		sp->units = SLOB_UNITS(PAGE_SIZE);
++		sp->freelist = b;
++		INIT_LIST_HEAD(&sp->slab_list);
++		set_slob(b, SLOB_UNITS(PAGE_SIZE), b + SLOB_UNITS(PAGE_SIZE));
++		set_slob_page_free(sp, slob_list);
++		b = slob_page_alloc(sp, size, align, align_offset, &_unused);
++		BUG_ON(!b);
++		spin_unlock_irqrestore(&slob_lock, flags);
++	}
++	if (unlikely(gfp & __GFP_ZERO))
++		memset(b, 0, size);
++	return b;
++}
++
++/*
++ * slob_free: entry point into the slob allocator.
++ */
++static void slob_free(void *block, int size)
++{
++	struct page *sp;
++	slob_t *prev, *next, *b = (slob_t *)block;
++	slobidx_t units;
++	unsigned long flags;
++	struct list_head *slob_list;
++
++	if (unlikely(ZERO_OR_NULL_PTR(block)))
++		return;
++	BUG_ON(!size);
++
++	sp = virt_to_page(block);
++	units = SLOB_UNITS(size);
++
++	spin_lock_irqsave(&slob_lock, flags);
++
++	if (sp->units + units == SLOB_UNITS(PAGE_SIZE)) {
++		/* Go directly to page allocator. Do not pass slob allocator */
++		if (slob_page_free(sp))
++			clear_slob_page_free(sp);
++		spin_unlock_irqrestore(&slob_lock, flags);
++		__ClearPageSlab(sp);
++		page_mapcount_reset(sp);
++		slob_free_pages(b, 0);
++		return;
++	}
++
++	if (!slob_page_free(sp)) {
++		/* This slob page is about to become partially free. Easy! */
++		sp->units = units;
++		sp->freelist = b;
++		set_slob(b, units,
++			(void *)((unsigned long)(b +
++					SLOB_UNITS(PAGE_SIZE)) & PAGE_MASK));
++		if (size < SLOB_BREAK1)
++			slob_list = &free_slob_small;
++		else if (size < SLOB_BREAK2)
++			slob_list = &free_slob_medium;
++		else
++			slob_list = &free_slob_large;
++		set_slob_page_free(sp, slob_list);
++		goto out;
++	}
++
++	/*
++	 * Otherwise the page is already partially free, so find reinsertion
++	 * point.
++	 */
++	sp->units += units;
++
++	if (b < (slob_t *)sp->freelist) {
++		if (b + units == sp->freelist) {
++			units += slob_units(sp->freelist);
++			sp->freelist = slob_next(sp->freelist);
++		}
++		set_slob(b, units, sp->freelist);
++		sp->freelist = b;
++	} else {
++		prev = sp->freelist;
++		next = slob_next(prev);
++		while (b > next) {
++			prev = next;
++			next = slob_next(prev);
++		}
++
++		if (!slob_last(prev) && b + units == next) {
++			units += slob_units(next);
++			set_slob(b, units, slob_next(next));
++		} else
++			set_slob(b, units, next);
++
++		if (prev + slob_units(prev) == b) {
++			units = slob_units(b) + slob_units(prev);
++			set_slob(prev, units, slob_next(b));
++		} else
++			set_slob(prev, slob_units(prev), b);
++	}
++out:
++	spin_unlock_irqrestore(&slob_lock, flags);
++}
++
++/*
++ * End of slob allocator proper. Begin kmem_cache_alloc and kmalloc frontend.
++ */
++
++static __always_inline void *
++__do_kmalloc_node(size_t size, gfp_t gfp, int node, unsigned long caller)
++{
++	unsigned int *m;
++	int minalign = max_t(size_t, ARCH_KMALLOC_MINALIGN, ARCH_SLAB_MINALIGN);
++	void *ret;
++
++	gfp &= gfp_allowed_mask;
++
++	fs_reclaim_acquire(gfp);
++	fs_reclaim_release(gfp);
++
++	if (size < PAGE_SIZE - minalign) {
++		int align = minalign;
++
++		/*
++		 * For power of two sizes, guarantee natural alignment for
++		 * kmalloc()'d objects.
++		 */
++		if (is_power_of_2(size))
++			align = max(minalign, (int) size);
++
++		if (!size)
++			return ZERO_SIZE_PTR;
++
++		m = slob_alloc(size + minalign, gfp, align, node, minalign);
++
++		if (!m)
++			return NULL;
++		*m = size;
++		ret = (void *)m + minalign;
++
++		trace_kmalloc_node(caller, ret,
++				   size, size + minalign, gfp, node);
++	} else {
++		unsigned int order = get_order(size);
++
++		if (likely(order))
++			gfp |= __GFP_COMP;
++		ret = slob_new_pages(gfp, order, node);
++
++		trace_kmalloc_node(caller, ret,
++				   size, PAGE_SIZE << order, gfp, node);
++	}
++
++	kmemleak_alloc(ret, size, 1, gfp);
++	return ret;
++}
++
++void *__kmalloc(size_t size, gfp_t gfp)
++{
++	return __do_kmalloc_node(size, gfp, NUMA_NO_NODE, _RET_IP_);
++}
++EXPORT_SYMBOL(__kmalloc);
++
++void *__kmalloc_track_caller(size_t size, gfp_t gfp, unsigned long caller)
++{
++	return __do_kmalloc_node(size, gfp, NUMA_NO_NODE, caller);
++}
++
++#ifdef CONFIG_NUMA
++void *__kmalloc_node_track_caller(size_t size, gfp_t gfp,
++					int node, unsigned long caller)
++{
++	return __do_kmalloc_node(size, gfp, node, caller);
++}
++#endif
++
++void kfree(const void *block)
++{
++	struct page *sp;
++
++	trace_kfree(_RET_IP_, block);
++
++	if (unlikely(ZERO_OR_NULL_PTR(block)))
++		return;
++	kmemleak_free(block);
++
++	sp = virt_to_page(block);
++	if (PageSlab(sp)) {
++		int align = max_t(size_t, ARCH_KMALLOC_MINALIGN, ARCH_SLAB_MINALIGN);
++		unsigned int *m = (unsigned int *)(block - align);
++		slob_free(m, *m + align);
++	} else {
++		unsigned int order = compound_order(sp);
++		mod_node_page_state(page_pgdat(sp), NR_SLAB_UNRECLAIMABLE,
++				    -(1 << order));
++		__free_pages(sp, order);
++
++	}
++}
++EXPORT_SYMBOL(kfree);
++
++/* can't use ksize for kmem_cache_alloc memory, only kmalloc */
++size_t __ksize(const void *block)
++{
++	struct page *sp;
++	int align;
++	unsigned int *m;
++
++	BUG_ON(!block);
++	if (unlikely(block == ZERO_SIZE_PTR))
++		return 0;
++
++	sp = virt_to_page(block);
++	if (unlikely(!PageSlab(sp)))
++		return page_size(sp);
++
++	align = max_t(size_t, ARCH_KMALLOC_MINALIGN, ARCH_SLAB_MINALIGN);
++	m = (unsigned int *)(block - align);
++	return SLOB_UNITS(*m) * SLOB_UNIT;
++}
++EXPORT_SYMBOL(__ksize);
++
++int __kmem_cache_create(struct kmem_cache *c, slab_flags_t flags)
++{
++	if (flags & SLAB_TYPESAFE_BY_RCU) {
++		/* leave room for rcu footer at the end of object */
++		c->size += sizeof(struct slob_rcu);
++	}
++	c->flags = flags;
++	return 0;
++}
++
++static void *slob_alloc_node(struct kmem_cache *c, gfp_t flags, int node)
++{
++	void *b;
++
++	flags &= gfp_allowed_mask;
++
++	fs_reclaim_acquire(flags);
++	fs_reclaim_release(flags);
++
++	if (c->size < PAGE_SIZE) {
++		b = slob_alloc(c->size, flags, c->align, node, 0);
++		trace_kmem_cache_alloc_node(_RET_IP_, b, c->object_size,
++					    SLOB_UNITS(c->size) * SLOB_UNIT,
++					    flags, node);
++	} else {
++		b = slob_new_pages(flags, get_order(c->size), node);
++		trace_kmem_cache_alloc_node(_RET_IP_, b, c->object_size,
++					    PAGE_SIZE << get_order(c->size),
++					    flags, node);
++	}
++
++	if (b && c->ctor) {
++		WARN_ON_ONCE(flags & __GFP_ZERO);
++		c->ctor(b);
++	}
++
++	kmemleak_alloc_recursive(b, c->size, 1, c->flags, flags);
++	return b;
++}
++
++void *kmem_cache_alloc(struct kmem_cache *cachep, gfp_t flags)
++{
++	return slob_alloc_node(cachep, flags, NUMA_NO_NODE);
++}
++EXPORT_SYMBOL(kmem_cache_alloc);
++
++#ifdef CONFIG_NUMA
++void *__kmalloc_node(size_t size, gfp_t gfp, int node)
++{
++	return __do_kmalloc_node(size, gfp, node, _RET_IP_);
++}
++EXPORT_SYMBOL(__kmalloc_node);
++
++void *kmem_cache_alloc_node(struct kmem_cache *cachep, gfp_t gfp, int node)
++{
++	return slob_alloc_node(cachep, gfp, node);
++}
++EXPORT_SYMBOL(kmem_cache_alloc_node);
++#endif
++
++static void __kmem_cache_free(void *b, int size)
++{
++	if (size < PAGE_SIZE)
++		slob_free(b, size);
++	else
++		slob_free_pages(b, get_order(size));
++}
++
++static void kmem_rcu_free(struct rcu_head *head)
++{
++	struct slob_rcu *slob_rcu = (struct slob_rcu *)head;
++	void *b = (void *)slob_rcu - (slob_rcu->size - sizeof(struct slob_rcu));
++
++	__kmem_cache_free(b, slob_rcu->size);
++}
++
++void kmem_cache_free(struct kmem_cache *c, void *b)
++{
++	kmemleak_free_recursive(b, c->flags);
++	if (unlikely(c->flags & SLAB_TYPESAFE_BY_RCU)) {
++		struct slob_rcu *slob_rcu;
++		slob_rcu = b + (c->size - sizeof(struct slob_rcu));
++		slob_rcu->size = c->size;
++		call_rcu(&slob_rcu->head, kmem_rcu_free);
++	} else {
++		__kmem_cache_free(b, c->size);
++	}
++
++	trace_kmem_cache_free(_RET_IP_, b);
++}
++EXPORT_SYMBOL(kmem_cache_free);
++
++void kmem_cache_free_bulk(struct kmem_cache *s, size_t size, void **p)
++{
++	__kmem_cache_free_bulk(s, size, p);
++}
++EXPORT_SYMBOL(kmem_cache_free_bulk);
++
++int kmem_cache_alloc_bulk(struct kmem_cache *s, gfp_t flags, size_t size,
++								void **p)
++{
++	return __kmem_cache_alloc_bulk(s, flags, size, p);
++}
++EXPORT_SYMBOL(kmem_cache_alloc_bulk);
++
++int __kmem_cache_shutdown(struct kmem_cache *c)
++{
++	/* No way to check for remaining objects */
++	return 0;
++}
++
++void __kmem_cache_release(struct kmem_cache *c)
++{
++}
++
++int __kmem_cache_shrink(struct kmem_cache *d)
++{
++	return 0;
++}
++
++struct kmem_cache kmem_cache_boot = {
++	.name = "kmem_cache",
++	.size = sizeof(struct kmem_cache),
++	.flags = SLAB_PANIC,
++	.align = ARCH_KMALLOC_MINALIGN,
++};
++
++void __init kmem_cache_init(void)
++{
++	kmem_cache = &kmem_cache_boot;
++	slab_state = UP;
++}
++
++void __init kmem_cache_init_late(void)
++{
++	slab_state = FULL;
++}
+diff -ruN linux-5.4.86-orig/mm/slob.c linux-5.4.86-dev/mm/slob.c
+--- linux-5.4.86-orig/mm/slob.c	2020-12-30 10:51:48.000000000 +0000
++++ linux-5.4.86-dev/mm/slob.c	2021-05-18 20:09:22.388869019 +0000
+@@ -74,6 +74,19 @@
+ #include <linux/atomic.h>
+ 
+ #include "slab.h"
++
++#define BEST_FIT
++//#define DEBUG_LOG
++
++
++//Measurements
++long int allocated_page_memory = 0;
++long int total_unused_memory = 0;
++
++//Measurements
++// long int allocated_page_memory = 0;
++// long int total_unused_memory = 0;
++
+ /*
+  * slob_block has a field 'units', which indicates size of block if +ve,
+  * or offset of next block if -ve (in SLOB_UNITs).
+@@ -83,9 +96,11 @@
+  * memory, and the offset of the next free block in the second SLOB_UNIT.
+  */
+ #if PAGE_SIZE <= (32767 * 2)
+-typedef s16 slobidx_t;
++	typedef s16 slobidx_t;
++	#define SHORT_MAX __INT16_MAX__
+ #else
+-typedef s32 slobidx_t;
++	typedef s32 slobidx_t;
++	#define SHORT_MAX __INT32_MAX__
+ #endif
+ 
+ struct slob_block {
+@@ -93,6 +108,30 @@
+ };
+ typedef struct slob_block slob_t;
+ 
++
++#ifdef BEST_FIT
++struct slob_block_info {
++	slob_t *ptr;
++	slob_t *prev_ptr;
++	slob_t *aligned_ptr;
++	int delta;
++	slobidx_t avail;
++	int free_space;
++};
++typedef struct slob_block_info slob_block_info_t;
++
++
++//Initialize @slob_block_info with @ptr, @prev_ptr, @aligned_ptr, @delta and @avail
++void init_slob_block(slob_block_info_t *slob_block_info, 	slob_t *ptr, slob_t *prev_ptr, slob_t *aligned_ptr,	int delta, slobidx_t avail, int free_space) {
++	slob_block_info->ptr = ptr;
++	slob_block_info->prev_ptr = prev_ptr;
++	slob_block_info->aligned_ptr = aligned_ptr;
++	slob_block_info->delta = delta;
++	slob_block_info->avail = avail;
++	slob_block_info->free_space = free_space;
++}
++#endif
++
+ /*
+  * All partially free slob pages go on these lists.
+  */
+@@ -204,6 +243,14 @@
+ 
+ 	mod_node_page_state(page_pgdat(page), NR_SLAB_UNRECLAIMABLE,
+ 			    1 << order);
++
++	// Measurements
++	allocated_page_memory += (PAGE_SIZE * (1 << order)); // Linux Kernel Development at Page 236 Chapter 12 Memory Management
++
++	total_unused_memory += (PAGE_SIZE * (1 << order));
++	
++	// total_unused_memory = allocated_page_memory - memory_used; 
++
+ 	return page_address(page);
+ }
+ 
+@@ -216,9 +263,287 @@
+ 
+ 	mod_node_page_state(page_pgdat(sp), NR_SLAB_UNRECLAIMABLE,
+ 			    -(1 << order));
++
++	//Measurements
++	allocated_page_memory -= (PAGE_SIZE * (1 << order)); //Linux Kernel Development at Page 236 Chapter 12 Memory Management
++	total_unused_memory -= (PAGE_SIZE * (1 << order));
++	
+ 	__free_pages(sp, order);
+ }
+ 
++#ifdef BEST_FIT
++//***************** Find and Return Best-Fit Block of a Page Which is Referenced by a Page Pointer *****************//  
++static slob_block_info_t find_best_fit_page_block(struct page *sp, size_t size, int align, int align_offset) {
++	slob_t *prev, *cur, *aligned = NULL;
++	int delta = 0, units = SLOB_UNITS(size);
++	
++	//Variables
++	slob_block_info_t best_fit_block;
++	int best_fit_empty_block_space = SHORT_MAX;
++	slobidx_t avail;
++
++	init_slob_block(&best_fit_block, NULL, NULL, NULL, 0, SHORT_MAX, __INT32_MAX__); //Avail = SHORT_MAX
++
++	for (prev = NULL, cur = sp->freelist; ; prev = cur, cur = slob_next(cur)) {
++		avail = slob_units(cur);
++
++		/*
++		 * 'aligned' will hold the address of the slob block so that the
++		 * address 'aligned'+'align_offset' is aligned according to the
++		 * 'align' parameter. This is for kmalloc() which prepends the
++		 * allocated block with its size, so that the block itself is
++		 * aligned when needed.
++		 */
++		if (align) {
++			aligned = (slob_t *) (ALIGN((unsigned long) cur + align_offset, align) - align_offset);
++			delta = aligned - cur;
++		}
++
++		if (avail >= units + delta) { /* room enough? */
++			//printk("***** %d", avail);
++			if ((avail - (units + delta)) < best_fit_empty_block_space) {
++				best_fit_block.free_space = avail - (units + delta);
++				best_fit_empty_block_space = best_fit_block.free_space;
++				
++				best_fit_block.ptr = cur;
++				best_fit_block.prev_ptr = prev; 
++				best_fit_block.aligned_ptr = aligned;
++				best_fit_block.delta = delta;
++				best_fit_block.avail = avail;
++								
++				if(!best_fit_block.free_space) { // exact fit //
++					break;
++				}
++			}
++		}
++
++		if (slob_last(cur)) {
++			break;
++		}
++	}
++
++	// if no block is found, ptr is NULL //
++	return best_fit_block;
++}
++
++
++
++/*
++ * slob_page_alloc() - Allocate a slob block within a given slob_page sp.
++ * @sp: Page to look in.
++ * @size: Size of the allocation.
++ * @align: Allocation alignment.
++ * @align_offset: Offset in the allocated block that will be aligned.
++ * @page_removed_from_list: Return parameter.
++ *
++ * Tries to find a chunk of memory at least @size bytes big within @page.
++ *
++ * Return: Pointer to memory if allocated, %NULL otherwise.  If the
++ *         allocation fills up @page then the page is removed from the
++ *         freelist, in this case @page_removed_from_list will be set to
++ *         true (set to false otherwise).
++ */
++static void *slob_page_alloc(struct page *sp, size_t size, int align, int align_offset, bool *page_removed_from_list, slob_block_info_t best_fit_block)
++{
++	static int print_threshold = 0;
++	slob_t *prev, *cur, *next;
++	int units = SLOB_UNITS(size);
++
++	*page_removed_from_list = false;	
++	
++
++	if (best_fit_block.ptr == NULL) {
++		//printk("Congratulations! You played yourself.....................");
++		return NULL;
++	}
++
++	#ifdef DEBUG_LOG
++	if (print_threshold >= 6000) {
++		print_threshold = 0;
++		printk("slob_alloc: Request: %d\n", units);
++		printk("slob_alloc: Candidate block size: ");
++
++		for (prev = NULL, cur = sp->freelist; ; prev = cur, cur = slob_next(cur)) {
++			slobidx_t avail = slob_units(cur);
++
++			printk("%d ", avail);
++			if (slob_last(cur)) {
++				break;
++			}
++		}
++
++		if (best_fit_block.avail != SHORT_MAX) {
++				printk("slob_alloc: Best Fit: %d\n", best_fit_block.avail);
++			}
++			else {
++				printk("slob_alloc: Best Fit: None\n");
++			}
++	}
++	else {
++		print_threshold++;
++	}
++	#endif
++
++	if (best_fit_block.delta) { /* need to fragment head to align? */
++		next = slob_next(best_fit_block.ptr);
++		set_slob(best_fit_block.aligned_ptr, best_fit_block.avail - best_fit_block.delta, next);
++		set_slob(best_fit_block.ptr, best_fit_block.delta, best_fit_block.aligned_ptr);
++	
++		best_fit_block.prev_ptr = best_fit_block.ptr;
++		best_fit_block.ptr = best_fit_block.aligned_ptr;
++		best_fit_block.avail = slob_units(best_fit_block.ptr);
++	}
++
++	next = slob_next(best_fit_block.ptr);
++
++	if (best_fit_block.avail == units) { /* exact fit? unlink. */
++		if (best_fit_block.prev_ptr)
++			set_slob(best_fit_block.prev_ptr, slob_units(best_fit_block.prev_ptr), next);
++		else
++			sp->freelist = next;
++	} else { /* fragment */
++		if (best_fit_block.prev_ptr)
++			set_slob(best_fit_block.prev_ptr, slob_units(best_fit_block.prev_ptr), best_fit_block.ptr + units);
++		else
++			sp->freelist = best_fit_block.ptr + units;
++		set_slob(best_fit_block.ptr + units, best_fit_block.avail - units, next);
++	}
++
++	sp->units -= units;
++
++	total_unused_memory -= size;
++
++	if (!sp->units) {
++		clear_slob_page_free(sp);
++		*page_removed_from_list = true;
++	}
++	return best_fit_block.ptr;
++}
++
++/*
++ * slob_alloc: entry point into the slob allocator.
++ */
++static void *slob_alloc(size_t size, gfp_t gfp, int align, int node,
++							int align_offset)
++{
++	struct page *sp;
++	struct list_head *slob_list;
++	slob_t *b = NULL;
++	unsigned long flags;
++	bool _unused;
++
++	struct page *best_fit_page = NULL; 
++	slob_block_info_t best_fit_block, current_page_block;
++	bool page_removed_from_list = false;
++	
++
++	if (size < SLOB_BREAK1)
++		slob_list = &free_slob_small;
++	else if (size < SLOB_BREAK2)
++		slob_list = &free_slob_medium;
++	else
++		slob_list = &free_slob_large;
++
++	spin_lock_irqsave(&slob_lock, flags);
++	
++	//init_slob_block(&temp_best_fit_block, NULL, NULL, NULL, 0, SHORT_MAX);
++	init_slob_block(&best_fit_block, NULL, NULL, NULL, 0, SHORT_MAX, __INT32_MAX__);
++		 
++	/* Iterate through each partially free page, try to find room */
++	list_for_each_entry(sp, slob_list, slab_list) { // for(...)
++		#ifdef CONFIG_NUMA
++				/*
++				* If there's a node specification, search for a partial
++				* page with a matching node id in the freelist.
++				*/
++				if (node != NUMA_NO_NODE && page_to_nid(sp) != node)
++					continue;
++		#endif
++
++		page_removed_from_list = false;
++
++		/* Enough room on this page? */
++		if (sp->units < SLOB_UNITS(size))
++			continue;
++
++	  current_page_block = find_best_fit_page_block(sp, size, align, align_offset);
++
++    if (current_page_block.avail < best_fit_block.avail) {
++			best_fit_block = current_page_block;
++			best_fit_page = sp;
++			
++			// exact fit
++			if (best_fit_block.free_space == 0)
++				break;
++		}
++
++		if (list_last_entry(slob_list, typeof(*sp), slab_list) == sp) { // if the end of the list is reached //
++			break;
++    }
++	}
++
++	if (best_fit_page != NULL){
++		b = slob_page_alloc(best_fit_page, size, align, align_offset, &page_removed_from_list, best_fit_block);
++	}
++	
++	// if (!b)
++	// 	goto LOOP;
++
++	/*
++		* If slob_page_alloc() removed sp from the list then we
++		* cannot call list functions on sp.  If so allocation
++		* did not fragment the page anyway so optimisation is
++		* unnecessary.
++		*/
++	if ((best_fit_page != NULL) && (!page_removed_from_list)) {
++		/*
++			* Improve fragment distribution and reduce our average
++			* search time by starting our next search here. (see
++			* Knuth vol 1, sec 2.5, pg 449)
++			*/
++		if (!list_is_first(&best_fit_page->slab_list, slob_list))
++			list_rotate_to_front(&best_fit_page->slab_list, slob_list);
++	}
++	
++	spin_unlock_irqrestore(&slob_lock, flags);
++
++	/* Not enough space: must allocate a new page */
++	if (!b) {
++		b = slob_new_pages(gfp & ~__GFP_ZERO, 0, node);
++		if (!b)
++			return NULL;
++	
++		sp = virt_to_page(b);
++		__SetPageSlab(sp);
++
++		spin_lock_irqsave(&slob_lock, flags);
++	
++		sp->units = SLOB_UNITS(PAGE_SIZE);
++		sp->freelist = b;
++		INIT_LIST_HEAD(&sp->slab_list);
++	
++		set_slob(b, SLOB_UNITS(PAGE_SIZE), b + SLOB_UNITS(PAGE_SIZE));
++		set_slob_page_free(sp, slob_list);
++	
++		// If size < PAGE_SIZE probably KABOOM??? //
++	  current_page_block = find_best_fit_page_block(sp, size, align, align_offset);
++		
++		if(!current_page_block.ptr){
++			return NULL;			
++		}
++			
++		b = slob_page_alloc(sp, size, align, align_offset, &_unused, current_page_block);
++		
++		BUG_ON(!b);
++		spin_unlock_irqrestore(&slob_lock, flags);
++	}
++	
++	if (unlikely(gfp & __GFP_ZERO))
++		memset(b, 0, size);
++	
++	return b;
++}
++#else
+ /*
+  * slob_page_alloc() - Allocate a slob block within a given slob_page sp.
+  * @sp: Page to look in.
+@@ -234,8 +559,7 @@
+  *         freelist, in this case @page_removed_from_list will be set to
+  *         true (set to false otherwise).
+  */
+-static void *slob_page_alloc(struct page *sp, size_t size, int align,
+-			      int align_offset, bool *page_removed_from_list)
++static void *slob_page_alloc(struct page *sp, size_t size, int align, int align_offset, bool *page_removed_from_list)
+ {
+ 	slob_t *prev, *cur, *aligned = NULL;
+ 	int delta = 0, units = SLOB_UNITS(size);
+@@ -284,6 +608,9 @@
+ 			}
+ 
+ 			sp->units -= units;
++
++			total_unused_memory -= size;
++
+ 			if (!sp->units) {
+ 				clear_slob_page_free(sp);
+ 				*page_removed_from_list = true;
+@@ -318,14 +645,14 @@
+ 	/* Iterate through each partially free page, try to find room */
+ 	list_for_each_entry(sp, slob_list, slab_list) {
+ 		bool page_removed_from_list = false;
+-#ifdef CONFIG_NUMA
+-		/*
+-		 * If there's a node specification, search for a partial
+-		 * page with a matching node id in the freelist.
+-		 */
+-		if (node != NUMA_NO_NODE && page_to_nid(sp) != node)
+-			continue;
+-#endif
++		#ifdef CONFIG_NUMA
++				/*
++				* If there's a node specification, search for a partial
++				* page with a matching node id in the freelist.
++				*/
++				if (node != NUMA_NO_NODE && page_to_nid(sp) != node)
++					continue;
++		#endif
+ 		/* Enough room on this page? */
+ 		if (sp->units < SLOB_UNITS(size))
+ 			continue;
+@@ -375,6 +702,9 @@
+ 		memset(b, 0, size);
+ 	return b;
+ }
++#endif
++
++
+ 
+ /*
+  * slob_free: entry point into the slob allocator.
+@@ -457,7 +787,10 @@
+ 		} else
+ 			set_slob(prev, slob_units(prev), b);
+ 	}
++
+ out:
++	total_unused_memory += size;
++
+ 	spin_unlock_irqrestore(&slob_lock, flags);
+ }
+ 
