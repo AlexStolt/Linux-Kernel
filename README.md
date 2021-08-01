@@ -26,7 +26,7 @@ sudo make menuconfig
 sudo nano Makefile
 ```
 #### Edit Makefile
-* EXTRAVERSION = -dev
+* ```EXTRAVERSION = -dev```
 ```
 sudo make -j2
 sudo make modules_install
