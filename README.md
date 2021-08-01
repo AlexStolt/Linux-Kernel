@@ -15,9 +15,9 @@ sudo cp -R linux-5.4.86-orig linux-5.4.86-dev
 ### Grub Configuration
 ```sudo nano /etc/default/grub```
 #### Update If Option Exists
-* GRUB_HIDDEN_TIMEOUT=-1
-* GRUB_HIDDEN_TIMEOUT_QUIET=true
-* GRUB_TIMEOUT=-1
+* ```GRUB_HIDDEN_TIMEOUT=-1```
+* ```GRUB_HIDDEN_TIMEOUT_QUIET=true```
+* ```GRUB_TIMEOUT=-1```
 ### Compile Kernel and Install Modules
 ```
 cd /usr/src/linux-5.4.86-dev/
