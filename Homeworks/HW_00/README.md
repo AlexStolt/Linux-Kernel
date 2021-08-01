@@ -1,15 +1,15 @@
-# Homework 0
-## Final Project Submission
+# Homework 0x00
+## System Call
+### [Kernel and User Level Code](https://github.com/AlexStolt/Linux-Kernel/tree/main/Homeworks/HW_00/System%20Call)
 
-### Task 0
-Location Path: ```Final_Project_Submission/project1_syscall/```
+### [User Level](https://github.com/AlexStolt/Linux-Kernel/tree/main/Homeworks/HW_00/System%20Call/User%20Level)
+* Compile: ```make```
+* Execute: ```./output```
+* Display Output: ```dmesg | tail```
+* Clean: ```make clean```
 
-* How to Compile: Run ```make``` on Location Path
-* How to Run: Run ```./output``` on Location Path
-* How to Test: Run ```dmesg | tail```
-* How to Clean: Run ```make clean``` on Location Path
 
-### Task 1
+### Kernel Module
 
 Location Path: ```Final_Project_Submission/project1_module/```
 
@@ -19,7 +19,7 @@ Location Path: ```Final_Project_Submission/project1_module/```
 * How to Test: Create a File and Write Something, then run ```dmesg | tail```
 * How to Clean: Run ```make clean``` on Location Path
 
-### Task 2
+### SYSFS Module
 Location Path: ```Final_Project_Submission/sysfs_module/```
 
 * How to Compile: Run ```make``` on Location Path
