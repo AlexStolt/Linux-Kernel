@@ -44,12 +44,12 @@ sudo mkinitramfs -o initrd.img-5.4.86-dev 5.4.86-dev
 1. **C Files (*.c)**: ```/usr/src/linux-5.4.86-dev/kernel/```
 2. **Object Files (*.o)**: ```/usr/src/linux-5.4.86-dev/kernel/Makefile```
 3. **Prototypes**: ```/usr/src/linux-5.4.86-dev/include/linux/syscalls.h```
-    * SYSCALL_DEFINE0(hello_syscall) -> asmlinkage long sys_hello_syscall(void);
+    * Example: ```SYSCALL_DEFINE0(hello_syscall)``` should be converted to ```asmlinkage long sys_hello_syscall(void);```
 4. **Syscall Number**: ```/usr/src/linux-5.4.86-dev/arch/x86/entry/syscalls/syscall_64.tbl```
-    * Example: 436&nbsp;&nbsp;&nbsp;&nbsp;common&nbsp;&nbsp;&nbsp;&nbsp;hello_syscall&nbsp;&nbsp;&nbsp;&nbsp;__x64_sys_hello_syscall
-5. Compile filename.c file ???
+    * Example: ```436    common    hello_syscall    __x64_sys_hello_syscall```
+5. Compile Kernel
 6. **Syscall Definition**: ```/usr/src/linux-5.4.86-dev/arch/x86/include/generated/uapi/asm/unistd_64.h```
-   * #define __NR_hello_syscall 436
+   * ```#define __NR_hello_syscall 436```
 7. **Make Syscall Visible to User**: Copy ```/usr/src/linux-5.4.86-dev/arch/x86/include/generated/uapi/asm/unistd_64.h``` to ```/usr/include/x86_64-linux-gnu/asm```
 8. Compile Kernel
 9. **View Syscall**: ```/boot/System.map-5.4.86-dev```
