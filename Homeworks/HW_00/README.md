@@ -17,8 +17,6 @@
 * How to Clean: Run ```make clean``` on Location Path
 
 ### [SYSFS Module](https://github.com/AlexStolt/Linux-Kernel/tree/main/Homeworks/HW_00/SYSFS)
-Location Path: ```Final_Project_Submission/sysfs_module/```
-
 * How to Compile: Run ```make``` on Location Path
 * Load Module on Kernel: ```sudo insmod sysfs_module.ko``` on Location Path
 * How to Test: Open File with ```cat /sys/kernel/team00/find_roots```
