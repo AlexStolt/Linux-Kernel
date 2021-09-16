@@ -2,13 +2,6 @@
 ## System Call
 ### [Kernel and User Level Code](https://github.com/AlexStolt/Linux-Kernel/tree/main/Homeworks/HW_00/System%20Call)
 
-### [User Level](https://github.com/AlexStolt/Linux-Kernel/tree/main/Homeworks/HW_00/System%20Call/User%20Level)
-* Compile: ```make```
-* Execute: ```./output```
-* Display Output: ```dmesg | tail```
-* Clean: ```make clean```
-
-
 ### [Kernel Module](https://github.com/AlexStolt/Linux-Kernel/tree/main/Homeworks/HW_00/Modules)
 * How to Compile: Run ```make``` on Location Path 
 * Load Module on Kernel: ```sudo insmod project1-kyber.ko``` on Location Path 
