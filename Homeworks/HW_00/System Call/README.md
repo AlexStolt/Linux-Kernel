@@ -7,3 +7,7 @@ Create a Kernel Level Function to Display All Parent Processes Iteratively Using
 
 ## User Level
 Create a Library Wrapper to Use the System Call For Testing
+* Compile: ```make```
+* Execute: ```./output```
+* Display Output: ```dmesg | tail```
+* Clean: ```make clean```
