@@ -9,17 +9,14 @@
 * Clean: ```make clean```
 
 
-### Kernel Module
-
-Location Path: ```Final_Project_Submission/project1_module/```
-
+### [Kernel Module](https://github.com/AlexStolt/Linux-Kernel/tree/main/Homeworks/HW_00/Modules)
 * How to Compile: Run ```make``` on Location Path 
 * Load Module on Kernel: ```sudo insmod project1-kyber.ko``` on Location Path 
 * How to Change Scheduler: ```sudo bash -c "echo team00_kyber > /sys/block/sda/queue/scheduler"```
 * How to Test: Create a File and Write Something, then run ```dmesg | tail```
 * How to Clean: Run ```make clean``` on Location Path
 
-### SYSFS Module
+### [SYSFS Module](https://github.com/AlexStolt/Linux-Kernel/tree/main/Homeworks/HW_00/SYSFS)
 Location Path: ```Final_Project_Submission/sysfs_module/```
 
 * How to Compile: Run ```make``` on Location Path
