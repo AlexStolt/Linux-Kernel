@@ -1,7 +1,7 @@
 # Module
 ## block/kyber-iosched.c
 ### Modify block/kyber-iosched.c
-* Copy to ```~/project1_module```
+* Copy to ```~/project1_module/```
 * Rename ```kyber-iosched.c``` to ```project1-kyber.c```
 * Modify ```project1-kyber.c```
 * Create a ```Makefile``` (Makefile is included in this File)
